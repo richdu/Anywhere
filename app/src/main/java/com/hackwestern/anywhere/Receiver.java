@@ -3,7 +3,10 @@ package com.hackwestern.anywhere;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.util.Log;
+import android.net.wifi.p2p.WifiP2pDevice;
 
 /**
  * Created by Frieda on 2015-03-28.
@@ -35,13 +38,19 @@ public class Receiver extends BroadcastReceiver{
             }
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 
-            // The peer list has changed!  We should probably do something about
-            // that.
+            manager.requestPeers(channel, new WifiP2pManager.PeerListListener() {
+                @Override
+                public void onPeersAvailable(WifiP2pDeviceList peers) {
+                    Object[] list = peers.getDeviceList().toArray();
+
+                    for(int i = 0; i < list.length; i++){
+                        WifiP2pDevice contents = (WifiP2pDevice)list[i];
+                        Log.d("TAG", contents.deviceName + "");
+                    }
+                }
+            });
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
-
-            // Connection state changed!  We should probably do something about
-            // that.
 
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
 

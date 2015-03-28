@@ -3,4 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.hackwestern.anywhere.DeviceListFragment"
+        android:id="@+id/frag_list"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>
