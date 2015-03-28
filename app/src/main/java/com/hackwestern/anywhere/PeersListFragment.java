@@ -11,15 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class PeersListFragment extends Fragment implements WifiP2pManager.PeerListListener{
-    private OnFragmentInteractionListener mListener;
+    private SearchClicked mListener;
     private ArrayList<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
     private PeerAdapter peerAdapter;
     private ListView listView;
+    private Button button;
 
     public static PeersListFragment newInstance() {
         PeersListFragment fragment = new PeersListFragment();
@@ -44,21 +46,22 @@ public class PeersListFragment extends Fragment implements WifiP2pManager.PeerLi
         View view = inflater.inflate(R.layout.fragment_peers_list, container, false);
         listView = (ListView) view.findViewById(R.id.peersListView);
         listView.setAdapter(peerAdapter);
-        return view;
-    }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        button = (Button) view.findViewById(R.id.searchButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onSearchClicked();
+            }
+        });
+        return view;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (SearchClicked) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -72,15 +75,18 @@ public class PeersListFragment extends Fragment implements WifiP2pManager.PeerLi
     }
 
     @Override
-    public void onPeersAvailable(WifiP2pDeviceList peers) {
-        this.peers.clear();
-        this.peers.addAll(peers.getDeviceList());
+    public void onPeersAvailable(WifiP2pDeviceList peerList) {
+        peers.clear();
+        peers.addAll(peerList.getDeviceList());
         peerAdapter.notifyDataSetChanged();
+        if (peers.size() == 0) {
+            Log.d("TAG", "No devices found");
+        }
         Log.d("TAG", "changed");
     }
 
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
+    public interface SearchClicked {
+        public void onSearchClicked();
     }
 
 }

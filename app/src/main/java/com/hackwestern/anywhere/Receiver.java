@@ -38,6 +38,7 @@ public class Receiver extends BroadcastReceiver{
             }
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 
+            Log.d("TAG", "receiver");
             manager.requestPeers(channel, (WifiP2pManager.PeerListListener) activity.getFragmentManager()
                     .findFragmentById(R.id.frag_list));
 
