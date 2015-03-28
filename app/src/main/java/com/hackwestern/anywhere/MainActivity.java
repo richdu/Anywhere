@@ -5,12 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
+
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -20,7 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements ChannelListener{
+public class MainActivity extends Activity implements ChannelListener, PeersListFragment.OnFragmentInteractionListener{
     //Whoa there dam
 
     public static final String TAG = "wifidirectdemo";
@@ -52,9 +54,6 @@ public class MainActivity extends Activity implements ChannelListener{
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null);
 
-        final DeviceListFragment fragment = (DeviceListFragment) getFragmentManager()
-                .findFragmentById(R.id.frag_list);
-        fragment.onInitiateDiscovery();
         manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
 
             @Override
@@ -87,6 +86,11 @@ public class MainActivity extends Activity implements ChannelListener{
 
     @Override
     public void onChannelDisconnected() {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

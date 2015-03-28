@@ -38,17 +38,8 @@ public class Receiver extends BroadcastReceiver{
             }
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 
-            manager.requestPeers(channel, new WifiP2pManager.PeerListListener() {
-                @Override
-                public void onPeersAvailable(WifiP2pDeviceList peers) {
-                    Object[] list = peers.getDeviceList().toArray();
-
-                    for(int i = 0; i < list.length; i++){
-                        WifiP2pDevice contents = (WifiP2pDevice)list[i];
-                        Log.d("TAG", contents.deviceName + "");
-                    }
-                }
-            });
+            manager.requestPeers(channel, (WifiP2pManager.PeerListListener) activity.getFragmentManager()
+                    .findFragmentById(R.id.frag_list));
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
 
