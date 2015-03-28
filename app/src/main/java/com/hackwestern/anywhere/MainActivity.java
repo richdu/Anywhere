@@ -1,6 +1,8 @@
 package com.hackwestern.anywhere;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -24,6 +26,9 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
     private WifiP2pManager manager;
     private boolean isWifiP2pEnabled = false;
     private boolean retryChannel = false;
+    MainFragment messageFragment;
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
     private final IntentFilter intentFilter = new IntentFilter();
     private Channel channel;
@@ -50,6 +55,10 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null);
+        messageFragment = new MainFragment ();
+
+        //initialize transaction and add to viewgroup
+        fragmentManager = getFragmentManager();
     }
 
     /** register the BroadcastReceiver with the intent values to be matched */
@@ -106,5 +115,8 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
                 Log.d("TAG", "fail: " + reason);
             }
         });
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, messageFragment);
+        fragmentTransaction.commit();
     }
 }
