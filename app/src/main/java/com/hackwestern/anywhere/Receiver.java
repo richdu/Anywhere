@@ -10,6 +10,15 @@ import android.net.wifi.p2p.WifiP2pManager;
  */
 public class Receiver extends BroadcastReceiver{
     MainActivity activity;
+    WifiP2pManager manager;
+    WifiP2pManager.Channel channel;
+
+    public Receiver(WifiP2pManager manager, WifiP2pManager.Channel channel, MainActivity activity){
+        super();
+        this.activity = activity;
+        this.channel = channel;
+        this.manager = manager;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
