@@ -2,6 +2,7 @@ package com.hackwestern.anywhere;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -11,13 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class PeersListFragment extends Fragment implements WifiP2pManager.PeerListListener{
+public class PeersListFragment extends Fragment implements ListView.OnItemClickListener, WifiP2pManager.PeerListListener{
     private SearchClicked mListener;
+    private DeviceClicked nListener;
     private ArrayList<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
     private PeerAdapter peerAdapter;
     private ListView listView;
@@ -46,6 +49,7 @@ public class PeersListFragment extends Fragment implements WifiP2pManager.PeerLi
         View view = inflater.inflate(R.layout.fragment_peers_list, container, false);
         listView = (ListView) view.findViewById(R.id.peersListView);
         listView.setAdapter(peerAdapter);
+        listView.setOnItemClickListener(this);
 
         button = (Button) view.findViewById(R.id.searchButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +66,7 @@ public class PeersListFragment extends Fragment implements WifiP2pManager.PeerLi
         super.onAttach(activity);
         try {
             mListener = (SearchClicked) activity;
+            nListener = (DeviceClicked) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -85,8 +90,20 @@ public class PeersListFragment extends Fragment implements WifiP2pManager.PeerLi
         Log.d("TAG", "changed");
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (null != nListener) {
+            WifiP2pDevice peer = peers.get(position);
+            nListener.onDeviceClicked(peer);
+        }
+    }
+
     public interface SearchClicked {
         public void onSearchClicked();
+    }
+
+    public interface DeviceClicked{
+        public void onDeviceClicked(WifiP2pDevice peer);
     }
 
 }
