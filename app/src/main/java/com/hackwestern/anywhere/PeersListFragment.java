@@ -25,6 +25,7 @@ public class PeersListFragment extends Fragment implements ListView.OnItemClickL
     private PeerAdapter peerAdapter;
     private ListView listView;
     private Button button;
+    private WifiP2pDevice device;
 
     public static PeersListFragment newInstance() {
         PeersListFragment fragment = new PeersListFragment();
@@ -96,6 +97,10 @@ public class PeersListFragment extends Fragment implements ListView.OnItemClickL
             WifiP2pDevice peer = peers.get(position);
             nListener.onDeviceClicked(peer);
         }
+    }
+
+    public void setDevice(WifiP2pDevice device){
+        this.device = device;
     }
 
     public interface SearchClicked {
