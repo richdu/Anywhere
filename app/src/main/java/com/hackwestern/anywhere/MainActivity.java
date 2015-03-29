@@ -140,8 +140,7 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
         fragmentTransaction.commit();
 
         LinearLayout ll = (LinearLayout) findViewById(R.id.frag_list);
-        ll.setVisibility(View.GONE);
-        ll.setClickable(false);
-        //fragmentManager.findFragmentById(R.id.frag_list).getView().setVisibility(View.INVISIBLE);
+        ll.setVisibility(View.INVISIBLE);
+        ll.setClickable(true);
     }
 }
