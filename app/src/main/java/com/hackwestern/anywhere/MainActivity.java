@@ -1,6 +1,7 @@
 package com.hackwestern.anywhere;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
     private boolean isWifiP2pEnabled = false;
     private boolean retryChannel = false;
     MainFragment messageFragment;
+    PeersListFragment peersListFragment;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
@@ -46,8 +48,6 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
@@ -55,10 +55,16 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null);
-        messageFragment = new MainFragment ();
 
         //initialize transaction and add to viewgroup
         fragmentManager = getFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        //peersListFragment = new PeersListFragment();
+        //fragmentTransaction.add(R.id.container, peersListFragment);
+        //fragmentTransaction.commit();
+
+        //peersListFragment = (PeersListFragment)fragmentManager.findFragmentById(R.id.frag_list);
     }
 
     /** register the BroadcastReceiver with the intent values to be matched */
@@ -115,8 +121,14 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
                 Log.d("TAG", "fail: " + reason);
             }
         });
+
+        Contact contact = new Contact ("Michael", "Profile Picture");
+
+        messageFragment = new MainFragment ();
+        messageFragment.setContact (contact);
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, messageFragment);
+        fragmentTransaction.addToBackStack (null);
         fragmentTransaction.commit();
     }
 }

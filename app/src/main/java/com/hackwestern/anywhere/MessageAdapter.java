@@ -40,8 +40,8 @@ public class MessageAdapter extends ArrayAdapter {
 
             TextView textView = (TextView) rowView.findViewById(R.id.message);
             textView.setText(messages.get(position).getText());
-            textView.setTextColor(Color.parseColor("#E0E0E0"));
-            textView.setBackgroundColor(Color.parseColor("#80CBC4"));
+            //textView.setTextColor(Color.parseColor("#FFFFFF"));
+            //textView.setBackgroundColor(Color.parseColor("#80CBC4"));
         }
         else {
             ImageView imageView = (ImageView) rowView.findViewById(R.id.thumbnail);

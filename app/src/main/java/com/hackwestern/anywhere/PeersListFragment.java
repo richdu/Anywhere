@@ -29,11 +29,6 @@ public class PeersListFragment extends Fragment implements ListView.OnItemClickL
     private Button button;
     private WifiP2pDevice device;
 
-    public static PeersListFragment newInstance() {
-        PeersListFragment fragment = new PeersListFragment();
-        return fragment;
-    }
-
     public PeersListFragment() {
     }
 
