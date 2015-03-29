@@ -49,7 +49,7 @@ public class PeersListFragment extends Fragment implements ListView.OnItemClickL
         listView.setAdapter(peerAdapter);
         listView.setOnItemClickListener(this);
 
-        button = (Button) view.findViewById(R.id.searchButton);
+        button = (Button) view.findViewById(R.id.search_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

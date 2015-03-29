@@ -17,6 +17,9 @@ import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements ChannelListener, PeersListFragment.SearchClicked, PeersListFragment.DeviceClicked {
@@ -28,7 +31,7 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
     private boolean isWifiP2pEnabled = false;
     private boolean retryChannel = false;
     MainFragment messageFragment;
-    PeersListFragment peersListFragment;
+    PeersListFragment peersListFragment;// = new PeersListFragment();
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
@@ -58,9 +61,8 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
 
         //initialize transaction and add to viewgroup
         fragmentManager = getFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+        //fragmentTransaction = fragmentManager.beginTransaction();
 
-        //peersListFragment = new PeersListFragment();
         //fragmentTransaction.add(R.id.container, peersListFragment);
         //fragmentTransaction.commit();
 
@@ -73,6 +75,12 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
         super.onResume();
         receiver = new Receiver(manager, channel, this);
         registerReceiver(receiver, intentFilter);
+
+        //fragmentManager.findFragmentById(R.id.frag_list).getView().setVisibility(View.VISIBLE);
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.frag_list);
+        ll.setVisibility(View.VISIBLE);
+        ll.setClickable(true);
     }
 
     @Override
@@ -130,5 +138,10 @@ public class MainActivity extends Activity implements ChannelListener, PeersList
         fragmentTransaction.replace(R.id.container, messageFragment);
         fragmentTransaction.addToBackStack (null);
         fragmentTransaction.commit();
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.frag_list);
+        ll.setVisibility(View.GONE);
+        ll.setClickable(false);
+        //fragmentManager.findFragmentById(R.id.frag_list).getView().setVisibility(View.INVISIBLE);
     }
 }
